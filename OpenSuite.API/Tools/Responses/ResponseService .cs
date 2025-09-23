@@ -55,6 +55,13 @@ namespace OpenSuite.API.Tools.Responses
                             (int)HttpStatusCode.OK,
                             new ApiResponse<T>( data: data!,code: 204)
                         );
+
+
+                    case HttpStatusCode.Unauthorized:
+                        return controller.StatusCode(
+                            (int)HttpStatusCode.Unauthorized,
+                            new ApiResponse<T>(errorMessage: errorMessage, code: 401)
+                        );
                     //return controller.NoContent();
 
                     default:

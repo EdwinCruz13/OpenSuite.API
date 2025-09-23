@@ -14,16 +14,11 @@ namespace Entidades.Seguridad.Permisos
 
         public Modulo Modulo { get; set; } = null!;
 
-        public virtual Estado Estado { get; set; } = null!;
+        public Estado Estado { get; set; } = null!;
 
         public DateTime FechaDesde { get; set; }
 
         public DateTime? FechaHasta { get; set; }
-
-        public DateTime? FechaGrabado { get; set; }
-
  
-
-        
     }
 }

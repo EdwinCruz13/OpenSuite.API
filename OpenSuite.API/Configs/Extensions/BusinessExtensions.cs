@@ -3,6 +3,7 @@ using Negocio.Modulos.Configuraciones.Empresas;
 using Negocio.Modulos.Finanzas.Comprobantes;
 using Negocio.Modulos.Finanzas.PlanCuentas;
 using Negocio.Modulos.Personas;
+using Negocio.Modulos.Seguridad.Auth;
 using Negocio.Modulos.Seguridad.Modulos;
 using Negocio.Modulos.Seguridad.Usuarios;
 
@@ -40,7 +41,7 @@ namespace OpenSuite.API.Configs.Extensions
 
             //seguridad
             services.AddScoped<ModulosServicios>();
-            
+            services.AddScoped<AuthServicios>();
 
 
 

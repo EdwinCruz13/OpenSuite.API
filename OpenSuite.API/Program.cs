@@ -1,4 +1,5 @@
 using OpenSuite.API.Configs.Extensions;
+using Shared.JWT;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,9 +22,14 @@ builder.Services.AddMappers();
 builder.Services.AddSwaggerDocumentation();
 builder.Services.AddScalarDocumentation();
 
-
 //
 builder.Services.AddCustomCors(); // lo usara maxwel para conectarse desde su front, sera un "para mientras"
+
+// Configuracion de JWT
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("AuthConfigurationKey"));
+builder.Services.AddScoped<JwtTokenService>();
+
+
 
 
 //
