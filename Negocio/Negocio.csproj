@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Datos\Datos.csproj" />
+    <ProjectReference Include="..\Entidades\Entidades.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Modulos\Inventario\" />
+    <Folder Include="Modulos\Compras\" />
+    <Folder Include="Modulos\CXC\" />
+    <Folder Include="Modulos\CXP\" />
+    <Folder Include="Modulos\Auditoria\" />
+    <Folder Include="Modulos\Seguridad\Permisos\" />
+    <Folder Include="Modulos\Seguridad\Perfiles\" />
+    <Folder Include="Modulos\Ventas\" />
+    <Folder Include="Modulos\RRHH\" />
+    <Folder Include="Modulos\Tesoreria\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+  </ItemGroup>
+
+</Project>

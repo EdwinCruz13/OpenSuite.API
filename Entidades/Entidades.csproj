@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Auditoria\" />
+    <Folder Include="Compras\" />
+    <Folder Include="CXC\" />
+    <Folder Include="CXP\" />
+    <Folder Include="Inventario\" />
+    <Folder Include="RRHH\" />
+    <Folder Include="Tesoreria\" />
+    <Folder Include="Ventas\" />
+  </ItemGroup>
+
+</Project>
