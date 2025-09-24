@@ -38,7 +38,7 @@ namespace Negocio.Modulos.Seguridad.Auth
         /// <returns></returns>
         public async Task<(
             bool Success, string? Token, 
-            Entidades.Seguridad.Auth.UsuarioAutenticado user,
+            Entidades.Seguridad.Auth.UsuarioAutenticado? user,
             List<Entidades.Seguridad.Perfiles.Perfil>? Roles,
             List<Entidades.Seguridad.Modulos.Modulo>? Modulos,
             List<Entidades.Seguridad.Modulos.SubModulo>? SubModulos,
@@ -73,7 +73,9 @@ namespace Negocio.Modulos.Seguridad.Auth
                                 .ThenInclude(m => m.Modulo),
                     asNoTracking: true
                 );
-                if (usuario == null) return (false, null, null, null, null, null, null, "Usuario no encontrado");
+                // Cambia los valores de retorno nulos explícitamente a valores predeterminados no nulos
+                if (usuario == null) 
+                    return (false, null, new Entidades.Seguridad.Auth.UsuarioAutenticado(), new List<Entidades.Seguridad.Perfiles.Perfil>(), new List<Entidades.Seguridad.Modulos.Modulo>(), new List<Entidades.Seguridad.Modulos.SubModulo>(), new List<Entidades.Seguridad.Modulos.Accion>(), "Usuario no encontrado");
 
                 //verificar el password encriptando
                 bool passwordValid = _passwordService.VerifyPassword(password, usuario.Contrasena);

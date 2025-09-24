@@ -241,6 +241,7 @@ public partial class OpenSuiteDbContext : DbContext
             entity.Property(e => e.FechaGrabado)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.Icon).HasMaxLength(150);
             entity.Property(e => e.nAccion).HasMaxLength(50);
 
             entity.HasOne(d => d.SubModulo).WithMany(p => p.Acciones)

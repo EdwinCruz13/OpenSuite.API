@@ -35,6 +35,7 @@ namespace OpenSuite.API.Controllers.Auth
         {
             try
             {
+                //llamar al servicio para obtener el usuario, roles, permisos y token
                 var (Success, Token, Usuario, Perfiles, Modulos, SubModulos, Acciones, Error) = await _authServicios.ObtenerUsuario(request.Username, request.Password);
 
                 //si no es exitoso, retornar error 401

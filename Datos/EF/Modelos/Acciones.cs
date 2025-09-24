@@ -17,8 +17,11 @@ public partial class Acciones
 
     public string? Descripcion { get; set; }
 
+    public string? Icon { get; set; }
+
     public DateTime? FechaGrabado { get; set; }
 
     public virtual ICollection<Permiso> Permiso { get; set; } = new List<Permiso>();
+
     public virtual SubModulo SubModulo { get; set; } = null!;
 }

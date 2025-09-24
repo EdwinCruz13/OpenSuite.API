@@ -8,7 +8,7 @@ REM para instalar los paquetes, ejecutar:
 REM   dotnet add package Microsoft.EntityFrameworkCore.Tools
 REM   dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 REM ojo: esto sobreescribirá los modelos y el contexto, asi que si se hicieron cambios manuales, se perderán
-REM ojo2: la cadena de conexión está hardcodeada, cambiarla si es necesario
+REM ojo2: la cadena de conexión está quemada, cambiarla si es necesario
 REM ojo3: el comando está dividido en varias líneas para mayor legibilidad, pero se puede poner en una sola línea
 REM ojo4: el comando usa SQL Server, cambiarlo si se usa otro motor
 REM ojo5: usa --no-onconfiguring para no generar OnConfiguring

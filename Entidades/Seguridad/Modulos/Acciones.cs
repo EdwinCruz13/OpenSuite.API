@@ -15,8 +15,10 @@ namespace Entidades.Seguridad.Modulos
         public string? Codigo { get; set; }
 
         public string? Descripcion { get; set; }
+        public string? Icon { get; set; }
 
         public DateTime? FechaGrabado { get; set; }
+
 
         public SubModulo SubModulo { get; set; }
 
