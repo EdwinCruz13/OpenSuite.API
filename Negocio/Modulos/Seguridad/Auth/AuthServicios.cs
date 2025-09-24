@@ -47,7 +47,7 @@ namespace Negocio.Modulos.Seguridad.Auth
         /// <param name="password"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<(bool Success, string? Token, List<string>? Roles, List<string>? Permisos, string? Error)> ObtenerUsuario(string username, string password)
+        public async Task<(bool Success, string? Token, UsuarioAutenticado user, List<string>? Roles, List<string>? Permisos, string? Error)> ObtenerUsuario(string username, string password)
         {
             //objeto para retornar
             UsuarioAutenticado usuarioAutenticado = new UsuarioAutenticado();
@@ -64,11 +64,11 @@ namespace Negocio.Modulos.Seguridad.Auth
                              .ThenInclude(e => e.Permiso),
                     asNoTracking: true
                 );
-                if (usuario == null) return (false, null, null, null, "Usuario no encontrado");
+                if (usuario == null) return (false, null, null, null, null, "Usuario no encontrado");
 
                 //verificar el password encriptando
                 bool passwordValid = _passwordService.VerifyPassword(password, usuario.Contrasena);
-                if(passwordValid== false) return (false, null, null, null, "Contraseña incorrecta");
+                if(passwordValid== false) return (false, null, null, null, null, "Contraseña incorrecta");
 
 
 
@@ -84,6 +84,7 @@ namespace Negocio.Modulos.Seguridad.Auth
 
 
                 //setear los datos del usuario autenticado
+                usuarioAutenticado.UsuarioID = usuario.UsuarioID;
                 usuarioAutenticado.nUsuario = usuario.Persona.nPersona;
                 usuarioAutenticado.Usuario = usuario.Login;
                 usuarioAutenticado.Perfiles = _mapper.Map<List<Entidades.Seguridad.Perfiles.Perfil>> (usuario.UsuarioPerfil.Select(x => x.Perfil).ToList());
@@ -96,13 +97,13 @@ namespace Negocio.Modulos.Seguridad.Auth
 
 
                 //retornar exito, token, roles, permisos
-                return (true, token, roles, permisos, null);
+                return (true, token, usuarioAutenticado, roles, permisos, null);
 
 
             }
             catch (Exception ex)
             {
-                return (false, null, null, null, ex.Message);
+                return (false, null, null, null, null, ex.Message);
             }
         }
 

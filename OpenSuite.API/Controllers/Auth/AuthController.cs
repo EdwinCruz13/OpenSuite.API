@@ -35,17 +35,18 @@ namespace OpenSuite.API.Controllers.Auth
         {
             try
             {
-                var (Success, Token, Roles, Permisos, Error) = await _authServicios.ObtenerUsuario(request.Username, request.Password);
+                var (Success, Token, Usuario, Roles, Permisos, Error) = await _authServicios.ObtenerUsuario(request.Username, request.Password);
 
-
+                //si no es exitoso, retornar error 401
                 if (!Success)
                     return response.BuildResponse<Entidades.Seguridad.Authentication.Auth>(this, null, HttpStatusCode.Unauthorized, Error);
 
 
-
+                //retornar el token, los roles y permisos
                 return response.BuildResponse<Entidades.Seguridad.Authentication.Auth>(this, new Entidades.Seguridad.Authentication.Auth
                 {
                     Token = Token!,
+                    Usuario = Usuario,
                     Perfiles = Roles,
                     Permisos = Permisos
                 });
