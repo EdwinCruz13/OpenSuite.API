@@ -1,20 +1,10 @@
 ﻿using AutoMapper;
 using Datos.EF;
 using Datos.EF.Modelos;
-using Entidades.Seguridad.Auth;
-using Entidades.Seguridad.Permisos;
 using Microsoft.EntityFrameworkCore;
-using OfficeOpenXml.FormulaParsing.LexicalAnalysis;
 using Shared.Encrypt;
 using Shared.JWT;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Negocio.Modulos.Seguridad.Auth
 {
@@ -41,19 +31,35 @@ namespace Negocio.Modulos.Seguridad.Auth
         }
 
         /// <summary>
-        /// validar el usuario y la contraseña, y si son correctos, genera un token JWT junto con los roles y permisos del usuario.
+        /// Obtener un usuario autenticado, sus roles y permisos, y generar un token JWT.
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public async Task<(bool Success, string? Token, UsuarioAutenticado user, List<string>? Roles, List<string>? Permisos, string? Error)> ObtenerUsuario(string username, string password)
+        public async Task<(
+            bool Success, string? Token, 
+            Entidades.Seguridad.Auth.UsuarioAutenticado user,
+            List<Entidades.Seguridad.Perfiles.Perfil>? Roles,
+            List<Entidades.Seguridad.Modulos.Modulo>? Modulos,
+            List<Entidades.Seguridad.Modulos.SubModulo>? SubModulos,
+            List<Entidades.Seguridad.Modulos.Accion>? Acciones,
+            string? Error)> 
+            ObtenerUsuario(string username, string password)
         {
             //objeto para retornar
-            UsuarioAutenticado usuarioAutenticado = new UsuarioAutenticado();
+            Entidades.Seguridad.Auth.UsuarioAutenticado usuarioAutenticado = new Entidades.Seguridad.Auth.UsuarioAutenticado();
+            List<Entidades.Seguridad.Perfiles.Perfil> perfiles = new List<Entidades.Seguridad.Perfiles.Perfil>();
+            List<Entidades.Seguridad.Modulos.Modulo> modulos = new List<Entidades.Seguridad.Modulos.Modulo>();
+            List<Entidades.Seguridad.Modulos.SubModulo> subModulos = new List<Entidades.Seguridad.Modulos.SubModulo>();
+            List<Entidades.Seguridad.Modulos.Accion> acciones = new List<Entidades.Seguridad.Modulos.Accion>();
 
             try
             {
+
+                ///////////////////////////////////////////////////////////////////////
+                //validar usuario y jwt
+                ///////////////////////////////////////////////////////////////////////
+
                 //comprobar si el usuario existe
                 var usuario = await _repository.GetAsync(
                     predicate: e => e.Login == username,
@@ -61,49 +67,69 @@ namespace Negocio.Modulos.Seguridad.Auth
                              .Include(e => e.Persona)
                              .Include(e => e.UsuarioPerfil)
                              .ThenInclude(e => e.Perfil)
-                             .ThenInclude(e => e.Permiso),
+                             .ThenInclude(e => e.Permiso)
+                                .ThenInclude(a => a.Acciones)
+                                .ThenInclude(s => s.SubModulo)
+                                .ThenInclude(m => m.Modulo),
                     asNoTracking: true
                 );
-                if (usuario == null) return (false, null, null, null, null, "Usuario no encontrado");
+                if (usuario == null) return (false, null, null, null, null, null, null, "Usuario no encontrado");
 
                 //verificar el password encriptando
                 bool passwordValid = _passwordService.VerifyPassword(password, usuario.Contrasena);
-                if(passwordValid== false) return (false, null, null, null, null, "Contraseña incorrecta");
+                if(passwordValid== false) return (false, null, null, null, null, null, null, "Contraseña incorrecta");
 
 
+
+                ///////////////////////////////////////////////////////////////////////
+                //setear los datos del usuario
+                ///////////////////////////////////////////////////////////////////////
+                usuarioAutenticado.UsuarioID = usuario.UsuarioID;
+                usuarioAutenticado.nUsuario = usuario.Persona.nPersona;
+                usuarioAutenticado.Usuario = usuario.Login;
+                usuarioAutenticado.PhotoUrl = "";
 
                 //obtener los roles del usuario
-                var roles = usuario.UsuarioPerfil.Select(up => up.Perfil.nPerfil).ToList();
+                perfiles = usuario.UsuarioPerfil.Select(x => _mapper.Map<Entidades.Seguridad.Perfiles.Perfil>(x.Perfil)).ToList();
+
+
                 //obtener los permisos del usuario
-                var permisos = usuario.UsuarioPerfil
+                acciones = usuario.UsuarioPerfil
                     .SelectMany(up => up.Perfil.Permiso)
-                    .Select(p => p.Acciones.nAccion)
+                    .Select(p => p.Acciones)
                     .Distinct()
+                    .Select(a => _mapper.Map<Entidades.Seguridad.Modulos.Accion>(a))
+                    .ToList();
+
+                subModulos = usuario.UsuarioPerfil
+                    .SelectMany(up => up.Perfil.Permiso)
+                    .Select(p => p.Acciones.SubModulo)
+                    .Distinct()
+                    .Select(s => _mapper.Map<Entidades.Seguridad.Modulos.SubModulo>(s))
+                    .ToList();
+
+                modulos = usuario.UsuarioPerfil
+                    .SelectMany(up => up.Perfil.Permiso)
+                    .Select(p => p.Acciones.SubModulo.Modulo)
+                    .Distinct()
+                    .Select(m => _mapper.Map<Entidades.Seguridad.Modulos.Modulo>(m))
                     .ToList();
 
 
 
-                //setear los datos del usuario autenticado
-                usuarioAutenticado.UsuarioID = usuario.UsuarioID;
-                usuarioAutenticado.nUsuario = usuario.Persona.nPersona;
-                usuarioAutenticado.Usuario = usuario.Login;
-                usuarioAutenticado.Perfiles = _mapper.Map<List<Entidades.Seguridad.Perfiles.Perfil>> (usuario.UsuarioPerfil.Select(x => x.Perfil).ToList());
-                //usuarioAutenticado.Acciones =
-
-
                 //generar el token basado en el login y los roles
-                var token = _jwt.GenerateToken(usuarioAutenticado);
+                var token = _jwt.GenerateToken(usuarioAutenticado, perfiles);
 
 
 
                 //retornar exito, token, roles, permisos
-                return (true, token, usuarioAutenticado, roles, permisos, null);
+                return (true, token, usuarioAutenticado, perfiles, modulos, subModulos, acciones, null);
 
 
             }
             catch (Exception ex)
             {
-                return (false, null, null, null, null, ex.Message);
+                return (false, null, null, null, null, null, null, ex.Message);
             }
         }
 

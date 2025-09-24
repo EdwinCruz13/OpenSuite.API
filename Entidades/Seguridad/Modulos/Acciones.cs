@@ -18,6 +18,8 @@ namespace Entidades.Seguridad.Modulos
 
         public DateTime? FechaGrabado { get; set; }
 
+        public SubModulo SubModulo { get; set; }
+
         //public virtual ICollection<Permiso> Permiso { get; set; } = new List<Permiso>();
     }
 }

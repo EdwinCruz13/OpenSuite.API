@@ -27,7 +27,7 @@ namespace Shared.JWT
         /// <param name="username"></param>
         /// <param name="roles"></param>
         /// <returns></returns>
-        public string GenerateToken(UsuarioAutenticado usuario)
+        public string GenerateToken(UsuarioAutenticado usuario, List<Entidades.Seguridad.Perfiles.Perfil> perfiles)
         {
 
             try
@@ -44,10 +44,11 @@ namespace Shared.JWT
                 };
 
                 // Agregar roles como claims
-                foreach (var role in usuario.Perfiles)
+                foreach (var role in perfiles)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, role.nPerfil));
                 }
+
 
                 // Crear el token JWT
                 var token = new JwtSecurityToken(

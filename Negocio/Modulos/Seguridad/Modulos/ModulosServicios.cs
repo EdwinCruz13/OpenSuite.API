@@ -64,13 +64,14 @@ namespace Negocio.Modulos.Seguridad.Modulos
         {
             try
             {
-                var modulo = await _repoModulo.GetAllAsync(
-                                filter: m => m.ModuloID == id,
+                var modulo = await _repoModulo.GetByIdAsync(
+                                keyValue: id,
+                                 keySelector: e => e.ModuloID,
                                 include: q => q
                                     .Include(e => e.SubModulo),
                                 asNoTracking: true
                 );
-                return _mapper.Map<Entidades.Seguridad.Modulos.Modulo?>(modulo);
+                return _mapper.Map<Entidades.Seguridad.Modulos.Modulo>(modulo);
             }
             catch (Exception ex)
             {

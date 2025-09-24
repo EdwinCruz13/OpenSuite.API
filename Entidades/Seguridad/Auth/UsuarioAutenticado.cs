@@ -17,7 +17,5 @@ namespace Entidades.Seguridad.Auth
         public String Usuario { get; set; } = string.Empty;
         public String nUsuario { get; set; } = string.Empty;
         public String PhotoUrl { get; set; } = string.Empty;
-        public List<Perfil>? Perfiles { get; set; } = new List<Perfil>();
-        public List<Accion>? Acciones { get; set; } = new List<Accion>();
     }
 }

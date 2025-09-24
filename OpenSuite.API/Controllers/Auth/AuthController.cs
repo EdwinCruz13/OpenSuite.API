@@ -35,7 +35,7 @@ namespace OpenSuite.API.Controllers.Auth
         {
             try
             {
-                var (Success, Token, Usuario, Roles, Permisos, Error) = await _authServicios.ObtenerUsuario(request.Username, request.Password);
+                var (Success, Token, Usuario, Perfiles, Modulos, SubModulos, Acciones, Error) = await _authServicios.ObtenerUsuario(request.Username, request.Password);
 
                 //si no es exitoso, retornar error 401
                 if (!Success)
@@ -47,8 +47,10 @@ namespace OpenSuite.API.Controllers.Auth
                 {
                     Token = Token!,
                     Usuario = Usuario,
-                    Perfiles = Roles,
-                    Permisos = Permisos
+                    Perfiles = (Perfiles.Count == 0) ? new List<Entidades.Seguridad.Perfiles.Perfil>() : Perfiles,
+                    Modulos = (Modulos.Count == 0) ? new List<Entidades.Seguridad.Modulos.Modulo>() : Modulos,
+                    SubModulos = (SubModulos.Count == 0) ? new List<Entidades.Seguridad.Modulos.SubModulo>() : SubModulos,
+                    Acciones = (Acciones.Count == 0) ? new List<Entidades.Seguridad.Modulos.Accion>() : Acciones
                 });
             }
             catch (Exception ex)

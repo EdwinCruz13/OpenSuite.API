@@ -20,6 +20,5 @@ public partial class Acciones
     public DateTime? FechaGrabado { get; set; }
 
     public virtual ICollection<Permiso> Permiso { get; set; } = new List<Permiso>();
-
     public virtual SubModulo SubModulo { get; set; } = null!;
 }

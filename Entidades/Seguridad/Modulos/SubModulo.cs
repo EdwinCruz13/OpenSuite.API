@@ -13,6 +13,6 @@
 
         public DateTime? FechaGrabado { get; set; }
 
-        //public List<Accion> Acciones { get; set; } = new List<Accion>();
+        public List<Accion> Acciones { get; set; } = new List<Accion>();
     }
 }
