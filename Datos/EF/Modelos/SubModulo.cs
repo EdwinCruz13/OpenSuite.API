@@ -17,6 +17,8 @@ public partial class SubModulo
 
     public string? Icon { get; set; }
 
+    public string? Route { get; set; }
+
     public DateTime FechaGrabado { get; set; }
 
     public virtual ICollection<Acciones> Acciones { get; set; } = new List<Acciones>();

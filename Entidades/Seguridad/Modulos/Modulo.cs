@@ -16,6 +16,8 @@ namespace Entidades.Seguridad.Modulos
 
         public string? Descripcion { get; set; }
         public string? Icon { get; set; }
+
+        public String Route { get; set; } = null!;
         public List<SubModulo> SubModulo { get; set; } = new List<SubModulo>();
     }
 }

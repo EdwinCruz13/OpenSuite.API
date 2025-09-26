@@ -40,7 +40,6 @@ namespace Negocio.Modulos.Personas
             {
                 /// Obtener todas las personas con PersonaID mayor a 0, ordenadas por PrimerNombre
                 var personas = await _repository.GetAllAsync(
-                                filter: p => p.PersonaID > 0,
                                 orderBy: q => q.OrderBy(p => p.PrimerNombre),
                                 include: q => q
                                     .Include(e => e.PersonaTipo)

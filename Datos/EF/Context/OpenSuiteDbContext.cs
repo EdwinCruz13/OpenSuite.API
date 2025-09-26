@@ -242,6 +242,7 @@ public partial class OpenSuiteDbContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.Icon).HasMaxLength(150);
+            entity.Property(e => e.Route).HasMaxLength(150);
             entity.Property(e => e.nAccion).HasMaxLength(50);
 
             entity.HasOne(d => d.SubModulo).WithMany(p => p.Acciones)
@@ -1204,6 +1205,7 @@ public partial class OpenSuiteDbContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.Icon).HasMaxLength(150);
+            entity.Property(e => e.Route).HasMaxLength(150);
             entity.Property(e => e.nModulo).HasMaxLength(25);
         });
 
@@ -2186,6 +2188,7 @@ public partial class OpenSuiteDbContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.Icon).HasMaxLength(150);
+            entity.Property(e => e.Route).HasMaxLength(150);
             entity.Property(e => e.nSubModulo).HasMaxLength(100);
 
             entity.HasOne(d => d.Modulo).WithMany(p => p.SubModulo)

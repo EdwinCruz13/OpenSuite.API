@@ -19,6 +19,8 @@ public partial class Acciones
 
     public string? Icon { get; set; }
 
+    public string? Route { get; set; }
+
     public DateTime? FechaGrabado { get; set; }
 
     public virtual ICollection<Permiso> Permiso { get; set; } = new List<Permiso>();

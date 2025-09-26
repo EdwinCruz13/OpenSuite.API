@@ -11,6 +11,8 @@
         public string? Descripcion { get; set; }
         public string? Icon { get; set; }
 
+        public String Route { get; set; } = null!;
+
         public DateTime? FechaGrabado { get; set; }
 
         public List<Accion> Acciones { get; set; } = new List<Accion>();

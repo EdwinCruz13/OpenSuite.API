@@ -17,6 +17,8 @@ namespace Entidades.Seguridad.Modulos
         public string? Descripcion { get; set; }
         public string? Icon { get; set; }
 
+        public String Route { get; set; } = null!;
+
         public DateTime? FechaGrabado { get; set; }
 
 
