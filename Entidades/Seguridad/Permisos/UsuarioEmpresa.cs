@@ -5,9 +5,9 @@ namespace Entidades.Seguridad.Permisos
 {
     public class UsuarioEmpresa
     {
-        public Usuario Usuario { get; set; } = null!;
+        public int UsuarioID { get; set; }
 
-        public Empresa Empresa { get; set; } = null!;
+        public int EmpresaID { get; set; }
 
         public DateTime FechaDesde { get; set; }
 

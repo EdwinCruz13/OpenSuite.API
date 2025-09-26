@@ -36,8 +36,9 @@ namespace Negocio.Modulos.Seguridad.Usuarios
                                 orderBy: q => q.OrderBy(u => u.UsuarioID),
                                 include: q => q
                                     .Include(e => e.Persona)
+                                    .ThenInclude(f => f.EntidadTipo)
                                     .Include(e => e.UsuarioPerfil)
-                                    .ThenInclude(e => e.Perfil),
+                                    .ThenInclude(p => p.Perfil),
                                 asNoTracking: true
             );
                 return _mapper.Map<List<Entidades.Seguridad.Usuarios.Usuario>>(usuarios);
@@ -68,9 +69,10 @@ namespace Negocio.Modulos.Seguridad.Usuarios
                 var usuario = await _repository.GetAsync(
                     predicate: predicate,
                     include: q => q
-                             .Include(e => e.UsuarioPerfil)
-                             .ThenInclude(e => e.Perfil)
-                             .Include(e => e.Persona),
+                                    .Include(e => e.Persona)
+                                    .ThenInclude(f => f.EntidadTipo)
+                                    .Include(e => e.UsuarioPerfil)
+                                    .ThenInclude(p => p.Perfil),
                     asNoTracking: true
                 );
 
@@ -99,9 +101,10 @@ namespace Negocio.Modulos.Seguridad.Usuarios
                     keySelector: u => u.UsuarioID,  
                     keyValue: UsuarioID,
                     include: q => q
-                             .Include(e => e.UsuarioPerfil)
-                             .ThenInclude(e => e.Perfil)
-                             .Include(e => e.Persona),
+                                    .Include(e => e.Persona)
+                                    .ThenInclude(f => f.EntidadTipo)
+                                    .Include(e => e.UsuarioPerfil)
+                                    .ThenInclude(p => p.Perfil),
                     asNoTracking: true
                 );
 

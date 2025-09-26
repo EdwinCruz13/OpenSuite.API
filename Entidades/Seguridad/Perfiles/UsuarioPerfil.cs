@@ -13,9 +13,9 @@ namespace Entidades.Seguridad.Perfiles
     /// </summary>
     public class UsuarioPerfil
     {
-        public Usuario Usuario { get; set; } = null!;
+        public int UsuarioID { get; set; }
 
-        public Perfil Perfil { get; set; } = null!;
+        public Perfil Perfil { get; set; } = new Perfil();
 
         public Estado Estado { get; set; } = null!;
 
