@@ -69,5 +69,28 @@ namespace OpenSuite.API.Controllers.Seguridad.Modulos
                 return _response.BuildResponse<Modulo>(this, null, exception: ex);
             }
         }
+
+        /// <summary>
+        /// obtiene un módulo por su nombre de ruta (Route).
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        [HttpGet("search/{name?}")]
+        public async Task<ActionResult<ApiResponse<Modulo>>> GetModuloByRoute(string? name)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(name))
+                {
+                    return _response.BuildResponse<Modulo>(this, null, System.Net.HttpStatusCode.BadRequest, "El name del módulo es inválido.", nameof(name));
+                }
+                var modulo = await _negocio.ObtenerModulo(name);
+                return _response.BuildResponse(this, modulo);
+            }
+            catch (Exception ex)
+            {
+                return _response.BuildResponse<Modulo>(this, null, exception: ex);
+            }
+        }
     }
 }

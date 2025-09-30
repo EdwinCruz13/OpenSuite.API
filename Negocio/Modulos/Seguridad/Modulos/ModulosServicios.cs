@@ -79,5 +79,33 @@ namespace Negocio.Modulos.Seguridad.Modulos
             }
         }
 
+        /// <summary>
+        /// obtiene un módulo por su ruta, incluyendo sus submódulos.
+        /// </summary>
+        /// <param name="route"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<Entidades.Seguridad.Modulos.Modulo?> ObtenerModulo(string route)
+        {
+            try
+            {
+                var modulo = await _repoModulo.GetAllAsync(
+                                filter: m => m.Route == route,
+                                include: q => q
+                                    .Include(e => e.SubModulo),
+                                asNoTracking: true
+                );
+
+                if(modulo == null || modulo.Count == 0)
+                    return null;
+
+                return _mapper.Map<Entidades.Seguridad.Modulos.Modulo>(modulo.FirstOrDefault());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }
