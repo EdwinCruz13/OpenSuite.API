@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Datos.EF;
 using Datos.EF.Modelos;
+using Entidades.Seguridad.Permisos;
 using Microsoft.EntityFrameworkCore;
 using Shared.Encrypt;
 using Shared.JWT;
@@ -39,19 +40,17 @@ namespace Negocio.Modulos.Seguridad.Auth
         public async Task<(
             bool Success, string? Token, 
             Entidades.Seguridad.Auth.UsuarioAutenticado? user,
+            Entidades.Configuraciones.Empresa? empresa,
             List<Entidades.Seguridad.Perfiles.Perfil>? Roles,
-            List<Entidades.Seguridad.Modulos.Modulo>? Modulos,
-            List<Entidades.Seguridad.Modulos.SubModulo>? SubModulos,
             List<Entidades.Seguridad.Modulos.Accion>? Acciones,
             string? Error)> 
             ObtenerUsuario(string username, string password)
         {
             //objeto para retornar
             Entidades.Seguridad.Auth.UsuarioAutenticado usuarioAutenticado = new Entidades.Seguridad.Auth.UsuarioAutenticado();
+            Entidades.Configuraciones.Empresa empresa = new Entidades.Configuraciones.Empresa();
             List<Entidades.Seguridad.Perfiles.Perfil> perfiles = new List<Entidades.Seguridad.Perfiles.Perfil>();
-            List<Entidades.Seguridad.Modulos.Modulo> modulos = new List<Entidades.Seguridad.Modulos.Modulo>();
-            List<Entidades.Seguridad.Modulos.SubModulo> subModulos = new List<Entidades.Seguridad.Modulos.SubModulo>();
-            List<Entidades.Seguridad.Modulos.Accion> acciones = new List<Entidades.Seguridad.Modulos.Accion>();
+            List<Entidades.Seguridad.Modulos.Accion> permisos = new List<Entidades.Seguridad.Modulos.Accion>();
 
             try
             {
@@ -65,6 +64,8 @@ namespace Negocio.Modulos.Seguridad.Auth
                     predicate: e => e.Login == username,
                     include: q => q
                              .Include(e => e.Persona)
+                             .Include(e => e.UsuarioEmpresa)
+                                .ThenInclude(emp => emp.Empresa)
                              .Include(e => e.UsuarioPerfil)
                              .ThenInclude(e => e.Perfil)
                              .ThenInclude(e => e.Permiso)
@@ -73,13 +74,14 @@ namespace Negocio.Modulos.Seguridad.Auth
                                 .ThenInclude(m => m.Modulo),
                     asNoTracking: true
                 );
+
                 // Cambia los valores de retorno nulos explícitamente a valores predeterminados no nulos
                 if (usuario == null) 
-                    return (false, null, new Entidades.Seguridad.Auth.UsuarioAutenticado(), new List<Entidades.Seguridad.Perfiles.Perfil>(), new List<Entidades.Seguridad.Modulos.Modulo>(), new List<Entidades.Seguridad.Modulos.SubModulo>(), new List<Entidades.Seguridad.Modulos.Accion>(), "Usuario no encontrado");
+                    return (false, null, new Entidades.Seguridad.Auth.UsuarioAutenticado(), new Entidades.Configuraciones.Empresa(), new List<Entidades.Seguridad.Perfiles.Perfil>(), new List<Entidades.Seguridad.Modulos.Accion>(), "Usuario no encontrado");
 
                 //verificar el password encriptando
                 bool passwordValid = _passwordService.VerifyPassword(password, usuario.Contrasena);
-                if(passwordValid== false) return (false, null, null, null, null, null, null, "Contraseña incorrecta");
+                if(passwordValid== false) return (false, null, null, null, null, null, "Contraseña incorrecta");
 
 
 
@@ -96,42 +98,30 @@ namespace Negocio.Modulos.Seguridad.Auth
 
 
                 //obtener los permisos del usuario
-                acciones = usuario.UsuarioPerfil
+                permisos = usuario.UsuarioPerfil
                     .SelectMany(up => up.Perfil.Permiso)
                     .Select(p => p.Acciones)
                     .Distinct()
                     .Select(a => _mapper.Map<Entidades.Seguridad.Modulos.Accion>(a))
                     .ToList();
 
-                subModulos = usuario.UsuarioPerfil
-                    .SelectMany(up => up.Perfil.Permiso)
-                    .Select(p => p.Acciones.SubModulo)
-                    .Distinct()
-                    .Select(s => _mapper.Map<Entidades.Seguridad.Modulos.SubModulo>(s))
-                    .ToList();
-
-                modulos = usuario.UsuarioPerfil
-                    .SelectMany(up => up.Perfil.Permiso)
-                    .Select(p => p.Acciones.SubModulo.Modulo)
-                    .Distinct()
-                    .Select(m => _mapper.Map<Entidades.Seguridad.Modulos.Modulo>(m))
-                    .ToList();
-
+                //obtener la empresa
+                empresa = _mapper.Map<Entidades.Configuraciones.Empresa>(usuario.UsuarioEmpresa.Select(eu => eu.Empresa).ToList().FirstOrDefault());
 
 
                 //generar el token basado en el login y los roles
-                var token = _jwt.GenerateToken(usuarioAutenticado, perfiles);
+                var token = _jwt.GenerateToken(usuarioAutenticado, perfiles, permisos);
 
 
 
                 //retornar exito, token, roles, permisos
-                return (true, token, usuarioAutenticado, perfiles, modulos, subModulos, acciones, null);
+                return (true, token, usuarioAutenticado, empresa, perfiles, permisos, null);
 
 
             }
             catch (Exception ex)
             {
-                return (false, null, null, null, null, null, null, ex.Message);
+                return (false, null, null, null, null, null, ex.Message);
             }
         }
 

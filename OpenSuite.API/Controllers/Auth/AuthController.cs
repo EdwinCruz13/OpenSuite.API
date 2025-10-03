@@ -36,7 +36,7 @@ namespace OpenSuite.API.Controllers.Auth
             try
             {
                 //llamar al servicio para obtener el usuario, roles, permisos y token
-                var (Success, Token, Usuario, Perfiles, Modulos, SubModulos, Acciones, Error) = await _authServicios.ObtenerUsuario(request.Username, request.Password);
+                var (Success, Token, Usuario, Empresa, Perfiles, Acciones, Error) = await _authServicios.ObtenerUsuario(request.Username, request.Password);
 
                 //si no es exitoso, retornar error 401
                 if (!Success)
@@ -48,9 +48,8 @@ namespace OpenSuite.API.Controllers.Auth
                 {
                     Token = Token!,
                     Usuario = Usuario,
+                    Empresa = Empresa,
                     Perfiles = (Perfiles.Count == 0) ? new List<Entidades.Seguridad.Perfiles.Perfil>() : Perfiles,
-                    Modulos = (Modulos.Count == 0) ? new List<Entidades.Seguridad.Modulos.Modulo>() : Modulos,
-                    SubModulos = (SubModulos.Count == 0) ? new List<Entidades.Seguridad.Modulos.SubModulo>() : SubModulos,
                     Acciones = (Acciones.Count == 0) ? new List<Entidades.Seguridad.Modulos.Accion>() : Acciones
                 });
             }

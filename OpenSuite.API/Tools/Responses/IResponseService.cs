@@ -17,12 +17,5 @@ namespace OpenSuite.API.Tools.Responses
         /// <returns></returns>
         ActionResult<ApiResponse<T>> BuildResponse<T>(ControllerBase controller, T? data, HttpStatusCode? forcedStatus = null, string? errorMessage = null, string? parameterName = null, Exception? exception = null);
 
-
-
-        //ApiResponse<T> Success<T>(T data, int code = 200);
-        //ApiResponse<T> Failure<T>(string? errorMessage = null, int code = 500);
-        //ApiResponse<T> ValidationError<T>(string? errorMessage = null, int code = 400);
-        //ApiResponse<T> ResourceNotFound<T>(string? errorMessage = null, int code = 404);
-        //ApiResponse<T> Created<T>(T data, int code = 201);
     }
 }

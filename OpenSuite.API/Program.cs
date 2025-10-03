@@ -1,5 +1,11 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using OpenSuite.API.Configs.Extensions;
+using OpenSuite.API.Extensions;
+using OpenSuite.API.Middleware;
+using OpenSuite.API.Tools.Responses;
 using Shared.JWT;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +34,7 @@ builder.Services.AddCustomCors(); // lo usara maxwel para conectarse desde su fr
 // Configuracion de JWT
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("AuthConfigurationKey"));
 builder.Services.AddScoped<JwtTokenService>();
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
 
 
@@ -41,7 +48,10 @@ app.UseCors("AllowAngular");
 // Middlewares
 app.UseRouting();
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<PermissionMiddleware>();
 
 
 app.UseSwaggerDocumentation(); // Swagger disponible en /swagger

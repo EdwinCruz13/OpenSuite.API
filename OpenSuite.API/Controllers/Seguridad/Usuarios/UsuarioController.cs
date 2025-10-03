@@ -1,10 +1,12 @@
 ﻿
+using Azure;
+using Entidades.Seguridad.Usuarios;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Negocio.Modulos.Seguridad.Usuarios;
 using OpenSuite.API.Tools.Responses;
-
-using Entidades.Seguridad.Usuarios;
 using System.Net;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OpenSuite.API.Controllers.Seguridad.Usuarios
 {
@@ -30,9 +32,11 @@ namespace OpenSuite.API.Controllers.Seguridad.Usuarios
         /// Listar todos los usuarios
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<ApiResponse<List<Usuario>>>> GetAll()
         {
+
             try
             {
                 var resultado = await negocio.ListarUsuarios();

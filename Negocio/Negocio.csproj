@@ -18,7 +18,6 @@
     <Folder Include="Modulos\CXC\" />
     <Folder Include="Modulos\CXP\" />
     <Folder Include="Modulos\Auditoria\" />
-    <Folder Include="Modulos\Seguridad\Permisos\" />
     <Folder Include="Modulos\Seguridad\Perfiles\" />
     <Folder Include="Modulos\Ventas\" />
     <Folder Include="Modulos\RRHH\" />

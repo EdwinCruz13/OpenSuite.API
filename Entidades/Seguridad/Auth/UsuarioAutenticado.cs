@@ -1,4 +1,5 @@
-﻿using Entidades.Seguridad.Modulos;
+﻿using Entidades.Configuraciones;
+using Entidades.Seguridad.Modulos;
 using Entidades.Seguridad.Perfiles;
 using System;
 using System.Collections.Generic;
@@ -17,5 +18,6 @@ namespace Entidades.Seguridad.Auth
         public String Usuario { get; set; } = string.Empty;
         public String nUsuario { get; set; } = string.Empty;
         public String PhotoUrl { get; set; } = string.Empty;
+        public Empresa Empresa { get; set; } = new Empresa();
     }
 }

@@ -242,8 +242,11 @@ public partial class OpenSuiteDbContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.Icon).HasMaxLength(150);
+            entity.Property(e => e.MethodType).HasMaxLength(10);
+            entity.Property(e => e.Permiso).HasMaxLength(50);
             entity.Property(e => e.Route).HasMaxLength(150);
             entity.Property(e => e.nAccion).HasMaxLength(50);
+            entity.Property(e => e.urlApi).HasMaxLength(150);
 
             entity.HasOne(d => d.SubModulo).WithMany(p => p.Acciones)
                 .HasForeignKey(d => new { d.SubModuloID, d.ModuloID })
@@ -1716,7 +1719,7 @@ public partial class OpenSuiteDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Permiso_PerfilID");
 
-            entity.HasOne(d => d.Acciones).WithMany(p => p.Permiso)
+            entity.HasOne(d => d.Acciones).WithMany(p => p.PermisoNavigation)
                 .HasForeignKey(d => new { d.AccionesID, d.SubModuloID, d.ModuloID })
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Permiso_ModuloIDSubModuloIDAccionesID");

@@ -1,12 +1,8 @@
-﻿using Entidades.Seguridad.Auth;
+﻿using Entidades.Configuraciones;
+using Entidades.Seguridad.Auth;
 using Entidades.Seguridad.Modulos;
 using Entidades.Seguridad.Perfiles;
-using Entidades.Seguridad.Permisos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Entidades.Seguridad.Authentication
 {
@@ -16,10 +12,9 @@ namespace Entidades.Seguridad.Authentication
     public class Auth
     {
         public String Token { get; set; } = string.Empty;
-        public UsuarioAutenticado Usuario { get; set; }
+        public UsuarioAutenticado Usuario { get; set; } = new UsuarioAutenticado();
+        public Empresa Empresa { get; set; } = new Empresa();
         public List<Perfil> Perfiles { get; set; } = new List<Perfil>();
-        public List<Modulo> Modulos { get; set; } = new List<Modulo>();
-        public List<SubModulo> SubModulos { get; set; } = new List<SubModulo>();
         public List<Accion> Acciones { get; set; } = new List<Accion>();
     }
 }

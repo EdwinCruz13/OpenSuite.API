@@ -15,15 +15,21 @@ public partial class Acciones
 
     public string? Codigo { get; set; }
 
+    public string? Permiso { get; set; }
+
     public string? Descripcion { get; set; }
 
     public string? Icon { get; set; }
 
     public string? Route { get; set; }
 
+    public string? urlApi { get; set; }
+
+    public string? MethodType { get; set; }
+
     public DateTime? FechaGrabado { get; set; }
 
-    public virtual ICollection<Permiso> Permiso { get; set; } = new List<Permiso>();
+    public virtual ICollection<Permiso> PermisoNavigation { get; set; } = new List<Permiso>();
 
     public virtual SubModulo SubModulo { get; set; } = null!;
 }

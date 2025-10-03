@@ -27,7 +27,7 @@ namespace Shared.JWT
         /// <param name="username"></param>
         /// <param name="roles"></param>
         /// <returns></returns>
-        public string GenerateToken(UsuarioAutenticado usuario, List<Entidades.Seguridad.Perfiles.Perfil> perfiles)
+        public string GenerateToken(UsuarioAutenticado usuario, List<Entidades.Seguridad.Perfiles.Perfil> perfiles, List<Entidades.Seguridad.Modulos.Accion> Acciones)
         {
 
             try
@@ -40,13 +40,20 @@ namespace Shared.JWT
                 var claims = new List<Claim>{
                     new Claim(JwtRegisteredClaimNames.Sub, usuario.UsuarioID.ToString()),
                     new Claim("Usuario", usuario.Usuario),
-                    new Claim("Usuario", usuario.nUsuario),
+                    new Claim("nUsuario", usuario.nUsuario),
                 };
 
                 // Agregar roles como claims
                 foreach (var role in perfiles)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, role.nPerfil));
+                }
+
+
+                //claims para acciones
+                foreach (var accion in Acciones) 
+                {
+                    claims.Add(new Claim("Accion", accion.Permiso)); 
                 }
 
 

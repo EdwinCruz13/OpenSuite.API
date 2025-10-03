@@ -50,4 +50,5 @@ namespace Entidades.Configuraciones
 
         public ICollection<EmpresaMoneda> EmpresaMoneda { get; set; } = new List<EmpresaMoneda>();
     }
+
 }
