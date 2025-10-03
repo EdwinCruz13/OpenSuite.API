@@ -40,6 +40,7 @@ namespace OpenSuite.API.Controllers.Seguridad.Usuarios
             try
             {
                 var resultado = await negocio.ListarUsuarios();
+
                 return response.BuildResponse(this, resultado);
             }
             catch (Exception ex)
