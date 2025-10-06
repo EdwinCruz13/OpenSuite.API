@@ -18,7 +18,7 @@ namespace Entidades.Seguridad.Modulos
         public string? Descripcion { get; set; }
         public string? Icon { get; set; }
 
-        public String Route { get; set; } = null!;
+        public String RouterLink { get; set; } = null!;
         public String urlApi { get; set; } = null!;
         public String MethodType { get; set; } = null!; //post, get, put, delete, bla bla bla
 

@@ -90,7 +90,7 @@ namespace Negocio.Modulos.Seguridad.Modulos
             try
             {
                 var modulo = await _repoModulo.GetAllAsync(
-                                filter: m => m.Route == route,
+                                filter: m => m.RouterLink == route,
                                 include: q => q
                                     .Include(e => e.SubModulo),
                                 asNoTracking: true

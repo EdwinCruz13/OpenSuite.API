@@ -21,7 +21,7 @@ public partial class Acciones
 
     public string? Icon { get; set; }
 
-    public string? Route { get; set; }
+    public string? RouterLink { get; set; }
 
     public string? urlApi { get; set; }
 

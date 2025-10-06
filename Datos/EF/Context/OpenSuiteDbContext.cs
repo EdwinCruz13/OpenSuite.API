@@ -244,7 +244,7 @@ public partial class OpenSuiteDbContext : DbContext
             entity.Property(e => e.Icon).HasMaxLength(150);
             entity.Property(e => e.MethodType).HasMaxLength(10);
             entity.Property(e => e.Permiso).HasMaxLength(50);
-            entity.Property(e => e.Route).HasMaxLength(150);
+            entity.Property(e => e.RouterLink).HasMaxLength(150);
             entity.Property(e => e.nAccion).HasMaxLength(50);
             entity.Property(e => e.urlApi).HasMaxLength(150);
 
@@ -1208,7 +1208,7 @@ public partial class OpenSuiteDbContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.Icon).HasMaxLength(150);
-            entity.Property(e => e.Route).HasMaxLength(150);
+            entity.Property(e => e.RouterLink).HasMaxLength(150);
             entity.Property(e => e.nModulo).HasMaxLength(25);
         });
 
@@ -2191,7 +2191,7 @@ public partial class OpenSuiteDbContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.Icon).HasMaxLength(150);
-            entity.Property(e => e.Route).HasMaxLength(150);
+            entity.Property(e => e.RouterLink).HasMaxLength(150);
             entity.Property(e => e.nSubModulo).HasMaxLength(100);
 
             entity.HasOne(d => d.Modulo).WithMany(p => p.SubModulo)

@@ -15,7 +15,7 @@ public partial class Modulo
 
     public string? Icon { get; set; }
 
-    public string? Route { get; set; }
+    public string? RouterLink { get; set; }
 
     public DateTime? FechaGrabado { get; set; }
 
